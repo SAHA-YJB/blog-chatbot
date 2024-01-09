@@ -1,5 +1,7 @@
 # 블로그 & 챗봇 Flow-Chart
 
+#### PagesRoute -> AppRouter(마이그레이션 예정)
+
 ```mermaid
 flowchart LR
   Home[메인화면]
