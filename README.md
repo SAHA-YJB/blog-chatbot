@@ -1,6 +1,6 @@
-# 블로그 & 챗봇 Flow-Chart
+# Blog-ChatBot Flow-Chart
 
-#### PagesRoute -> AppRouter(마이그레이션 예정)
+##### PagesRoute -> AppRouter(마이그레이션 예정)
 
 ```mermaid
 flowchart LR
@@ -35,3 +35,7 @@ flowchart LR
   Footer -.-> Admin -.-> Create
   List -.-> Detail
 ```
+
+### 개발 환경
+
+##### NextJS / ESlint-Prettier / TailwindCSS / Supabase
