@@ -6,9 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "genTypes": "supabase gen types typescript --project-id snqggunfctrcgwsfyqbj > src/types/supabase.ts"
   },
   "dependencies": {
+    "@supabase/ssr": "^0.0.10",
+    "@supabase/supabase-js": "^2.39.2",
     "class-variance-authority": "^0.7.0",
     "next": "14.0.4",
     "react": "^18",
@@ -26,6 +29,7 @@
     "eslint-plugin-tailwindcss": "^3.13.1",
     "postcss": "^8",
     "prettier": "3.1.1",
+    "supabase": "^1.127.4",
     "tailwindcss": "^3.3.0",
     "typescript": "^5"
   }
