@@ -26,7 +26,7 @@ const Header: FC<HeaderProps> = ({ setIsSidebarOpen, isSidebarOpen }) => {
           SAHA
         </h1>
       </Link>
-      <Link href="/posts" className="p-2">
+      <Link href="/search" className="p-2">
         <BsRobot className="h-5 w-5 lg:h-6 lg:w-6" />
       </Link>
     </header>
