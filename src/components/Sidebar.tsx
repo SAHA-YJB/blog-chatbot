@@ -2,6 +2,7 @@ import { cn } from '@/utils/style';
 import Link from 'next/link';
 import React, { FC } from 'react';
 import { AiFillGithub, AiFillFileText, AiOutlineClose } from 'react-icons/ai';
+import IconButton from './IconButton';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -17,7 +18,7 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, close }) => {
       )}
     >
       <div className="flex justify-end lg:hidden">
-        <AiOutlineClose onClick={close} className="h-5 w-5" />
+        <IconButton Icon={AiOutlineClose} onClick={close} />
       </div>
       <Link href="/" className="w-48 font-medium text-gray-600 hover:underline">
         홈
@@ -32,17 +33,17 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, close }) => {
         WEB DEV
       </Link>
       <div className="mt-10 flex items-center gap-4">
-        <Link
+        <IconButton
           href="https://lumbar-emoji-10f.notion.site/1504565fccb94676973d3a336daa946f?pvs=4"
           target="_blank"
-        >
-          <span className="sr-only">resume</span>
-          <AiFillFileText className="h-6 w-6" />
-        </Link>
-        <Link href="https://github.com/SAHA-YJB" target="_blank">
-          <span className="sr-only">github</span>
-          <AiFillGithub className="h-6 w-6" />
-        </Link>
+          Icon={AiFillFileText}
+          component={Link}
+        />
+        <IconButton
+          Icon={AiFillGithub}
+          component={Link}
+          href="https://github.com/SAHA-YJB"
+        />
       </div>
     </div>
   );

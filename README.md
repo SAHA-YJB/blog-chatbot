@@ -42,6 +42,8 @@ flowchart LR
 
 ### 1. 페이지 / 레이아웃 구현
 
-##### - NextJS라우팅 - 테일윈드 반응형 레이아웃
+##### - NextJS라우팅 / 테일윈드 반응형 레이아웃
 
-##### - Sidebar - Dynamic Route
+##### - Sidebar / Dynamic Route
+
+###### -- common IconButton Component
