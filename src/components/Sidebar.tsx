@@ -32,7 +32,7 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, close }) => {
         WEB DEV
       </Link>
       <div className="mt-10 flex items-center gap-4">
-        <Link href="/https://s-aha-dev.tistory.com/" target="_blank">
+        <Link href="https://s-aha-dev.tistory.com" target="_blank">
           <AiFillFileText className="h-6 w-6" />
         </Link>
         <Link href="https://github.com/SAHA-YJB" target="_blank">

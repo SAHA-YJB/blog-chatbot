@@ -22,8 +22,8 @@ const Header: FC<HeaderProps> = ({ setIsSidebarOpen, isSidebarOpen }) => {
         )}
       </button>
       <Link href="/">
-        <h1 className="text-3xl font-medium text-slate-600 lg:text-4xl">
-          SAHA
+        <h1 className="text-3xl font-medium text-slate-800 lg:text-4xl">
+          SAHA<span className="text-slate-400">LOG</span>
         </h1>
       </Link>
       <Link href="/search" className="p-2">
