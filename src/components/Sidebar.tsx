@@ -41,6 +41,7 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, close }) => {
         />
         <IconButton
           Icon={AiFillGithub}
+          target="_blank"
           component={Link}
           href="https://github.com/SAHA-YJB"
         />

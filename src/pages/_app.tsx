@@ -19,6 +19,7 @@ export default function App({ Component, pageProps }: AppProps) {
           isSidebarOpen={isSidebarOpen}
           setIsSidebarOpen={setIsSidebarOpen}
         />
+        {/* 해더가 포지션 픽스드의 역할처럼 될 수 있게 해주는 플렉스컨테이너이자 아이템 */}
         <div className="flex flex-1 flex-col overflow-y-auto">
           <main className="flex-1">
             <Component {...pageProps} />
