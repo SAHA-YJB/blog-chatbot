@@ -51,3 +51,5 @@ flowchart LR
 ### 2. write / detail page
 
 ###### - 카테고리 및 태그 입력창(react-select) / 글 내용 작성(react-md-editor) / 글 작성 요청(formidable) / 글 디테일 페이지(date-fns / reactmarkdown-preview)
+
+###### - supabase connect / Post table
