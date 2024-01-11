@@ -18,7 +18,9 @@ export const getServerSideProps: GetServerSideProps = async ({
   req,
 }) => {
   const { id } = query;
+  // 현재 요청의 쿠키를 사용하여 Supabase 클라이언트를 생성
   const supabase = createClient(req.cookies);
+  // 'Post'라는 테이블에서 모든(*) 정보를 선택하고 그 중 'id'가 특정 번호(id)와 일치하는 것을 선택
   const response = await supabase.from('Post').select('*').eq('id', Number(id));
   console.log(response);
   return {
