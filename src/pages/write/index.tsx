@@ -1,6 +1,7 @@
 import { MarkdownEditor } from '@/components/Markdown';
 import { createClient } from '@/utils/supabase/server';
 import { GetServerSideProps } from 'next';
+import { useRef, useState } from 'react';
 import ReactSelect from 'react-select';
 
 interface WriteProps {
@@ -12,6 +13,12 @@ export default function Write({
   existingTags,
   existingCategories,
 }: WriteProps) {
+  const fileRef = useRef<HTMLInputElement>(null);
+  const [title, setTitle] = useState('');
+  const [tags, setTags] = useState('');
+  const [category, setCategory] = useState('');
+  const [content, setContent] = useState('');
+
   return (
     <div className="container mx-auto flex flex-col px-4 pb-20 pt-12">
       <h1 className="mb-8 text-2xl font-medium">새로운 글</h1>
@@ -21,11 +28,14 @@ export default function Write({
             type="text"
             placeholder="제목"
             className="rounded-md border border-gray-300 p-2 transition-all hover:border-gray-400"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
           />
           <input
             type="file"
             accept="image/*"
             className="rounded-md border border-gray-300 p-2 transition-all hover:border-gray-400"
+            ref={fileRef}
           />
           <ReactSelect
             options={existingCategories.map((category) => ({
@@ -34,6 +44,7 @@ export default function Write({
             }))}
             placeholder="카테고리"
             isMulti={false}
+            onChange={(e) => e && setCategory(e.value)}
           />
           <ReactSelect
             options={existingTags.map((tag) => ({
@@ -42,8 +53,15 @@ export default function Write({
             }))}
             placeholder="태그"
             isMulti={true}
+            onChange={(e) =>
+              e && setTags(JSON.stringify(e.map((e) => e.value)))
+            }
           />
-          <MarkdownEditor height={500} />
+          <MarkdownEditor
+            height={500}
+            value={content}
+            onChange={(e) => setContent(e ?? '')}
+          />
         </div>
         <button
           type="submit"
