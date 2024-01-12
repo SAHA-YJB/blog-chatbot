@@ -2,7 +2,7 @@ import { MarkdownEditor } from '@/components/Markdown';
 import { createClient } from '@/utils/supabase/server';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import { useRef, useState } from 'react';
+import { FormEvent, useRef, useState } from 'react';
 import ReactSelect from 'react-select';
 
 interface WriteProps {
@@ -21,13 +21,14 @@ export default function Write({
   const [content, setContent] = useState('');
   const router = useRouter();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const formData = new FormData();
+
     formData.append('title', title);
-    formData.append('tags', tags);
     formData.append('category', category);
+    formData.append('tags', tags);
     formData.append('content', content);
 
     if (fileRef.current?.files?.[0]) {
@@ -40,6 +41,7 @@ export default function Write({
     });
 
     const data = await response.json();
+
     if (data.id) {
       router.push(`/posts/${data.id}`);
     }
@@ -64,6 +66,7 @@ export default function Write({
             ref={fileRef}
           />
           <ReactSelect
+            instanceId="category"
             options={existingCategories.map((category) => ({
               label: category,
               value: category,
@@ -73,12 +76,13 @@ export default function Write({
             onChange={(e) => e && setCategory(e.value)}
           />
           <ReactSelect
+            instanceId="tags"
             options={existingTags.map((tag) => ({
               label: tag,
               value: tag,
             }))}
             placeholder="태그"
-            isMulti={true}
+            isMulti
             onChange={(e) =>
               e && setTags(JSON.stringify(e.map((e) => e.value)))
             }

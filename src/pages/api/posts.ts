@@ -14,7 +14,7 @@ export default async function handler(
 
   let preview_image_url: string | null = null;
 
-  const supabase = createClient(req.cookies);
+  const supabase = await createClient(req.cookies);
 
   if (files.preview_image?.length === 1) {
     const file = files.preview_image[0];
