@@ -1,3 +1,5 @@
+import ReactSelect from 'react-select';
+
 export default function Write() {
   return (
     <div className="container mx-auto flex flex-col px-4 pb-20 pt-12">
@@ -14,6 +16,8 @@ export default function Write() {
             accept="image/*"
             className="rounded-md border border-gray-300 p-2 transition-all hover:border-gray-400"
           />
+          <ReactSelect options={[]} placeholder="카테고리" isMulti={false} />
+          <ReactSelect options={[]} placeholder="태그" isMulti={true} />
         </div>
         <button
           type="submit"
