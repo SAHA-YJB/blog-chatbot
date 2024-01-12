@@ -1,7 +1,17 @@
 import { MarkdownEditor } from '@/components/Markdown';
+import { createClient } from '@/utils/supabase/server';
+import { GetServerSideProps } from 'next';
 import ReactSelect from 'react-select';
 
-export default function Write() {
+interface WriteProps {
+  existingTags: string[];
+  existingCategories: string[];
+}
+
+export default function Write({
+  existingTags,
+  existingCategories,
+}: WriteProps) {
   return (
     <div className="container mx-auto flex flex-col px-4 pb-20 pt-12">
       <h1 className="mb-8 text-2xl font-medium">새로운 글</h1>
@@ -17,8 +27,16 @@ export default function Write() {
             accept="image/*"
             className="rounded-md border border-gray-300 p-2 transition-all hover:border-gray-400"
           />
-          <ReactSelect options={[]} placeholder="카테고리" isMulti={false} />
-          <ReactSelect options={[]} placeholder="태그" isMulti={true} />
+          <ReactSelect
+            options={existingCategories}
+            placeholder="카테고리"
+            isMulti={false}
+          />
+          <ReactSelect
+            options={existingTags}
+            placeholder="태그"
+            isMulti={true}
+          />
           <MarkdownEditor height={500} />
         </div>
         <button
@@ -31,3 +49,21 @@ export default function Write() {
     </div>
   );
 }
+
+export const getServerSideProps: GetServerSideProps<WriteProps> = async ({
+  req,
+}) => {
+  const supabase = createClient(req.cookies);
+  const { data } = await supabase.from('Post').select('tags, category');
+
+  return {
+    props: {
+      existingCategories: Array.from(
+        new Set(data?.map((post) => post.category)),
+      ),
+      existingTags: Array.from(
+        new Set(data?.flatMap((post) => JSON.parse(post.tags))),
+      ),
+    },
+  };
+};
