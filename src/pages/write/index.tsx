@@ -29,24 +29,22 @@ export default function Write({
     formData.append('tags', tags);
     formData.append('category', category);
     formData.append('content', content);
+
     if (fileRef.current?.files?.[0]) {
       formData.append('preview_image', fileRef.current.files[0]);
     }
 
     const response = await fetch('/api/posts', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
       body: formData,
     });
 
     const data = await response.json();
-
     if (data.id) {
       router.push(`/posts/${data.id}`);
     }
   };
+
   return (
     <div className="container mx-auto flex flex-col px-4 pb-20 pt-12">
       <h1 className="mb-8 text-2xl font-medium">새로운 글</h1>
