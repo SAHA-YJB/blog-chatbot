@@ -1,3 +1,4 @@
+import { MarkdownEditor } from '@/components/Markdown';
 import ReactSelect from 'react-select';
 
 export default function Write() {
@@ -18,6 +19,7 @@ export default function Write() {
           />
           <ReactSelect options={[]} placeholder="카테고리" isMulti={false} />
           <ReactSelect options={[]} placeholder="태그" isMulti={true} />
+          <MarkdownEditor height={500} />
         </div>
         <button
           type="submit"
