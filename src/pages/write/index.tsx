@@ -1,6 +1,7 @@
 import { MarkdownEditor } from '@/components/Markdown';
 import { createClient } from '@/utils/supabase/server';
 import { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
 import { useRef, useState } from 'react';
 import ReactSelect from 'react-select';
 
@@ -18,11 +19,38 @@ export default function Write({
   const [tags, setTags] = useState('');
   const [category, setCategory] = useState('');
   const [content, setContent] = useState('');
+  const router = useRouter();
 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('tags', tags);
+    formData.append('category', category);
+    formData.append('content', content);
+    if (fileRef.current?.files?.[0]) {
+      formData.append('preview_image', fileRef.current.files[0]);
+    }
+
+    const response = await fetch('/api/posts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      body: formData,
+    });
+
+    const data = await response.json();
+
+    if (data.id) {
+      router.push(`/posts/${data.id}`);
+    }
+  };
   return (
     <div className="container mx-auto flex flex-col px-4 pb-20 pt-12">
       <h1 className="mb-8 text-2xl font-medium">새로운 글</h1>
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="flex flex-col gap-3">
           <input
             type="text"
