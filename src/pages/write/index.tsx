@@ -28,12 +28,18 @@ export default function Write({
             className="rounded-md border border-gray-300 p-2 transition-all hover:border-gray-400"
           />
           <ReactSelect
-            options={existingCategories}
+            options={existingCategories.map((category) => ({
+              label: category,
+              value: category,
+            }))}
             placeholder="카테고리"
             isMulti={false}
           />
           <ReactSelect
-            options={existingTags}
+            options={existingTags.map((tag) => ({
+              label: tag,
+              value: tag,
+            }))}
             placeholder="태그"
             isMulti={true}
           />
