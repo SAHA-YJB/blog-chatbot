@@ -35,11 +35,7 @@ export default function Write({
       if (fileRef.current?.files?.[0]) {
         formData.append('preview_image', fileRef.current.files[0]);
       }
-      console.log('포스트요청1');
-      const response = await axios.post('/api/posts', formData, {
-        timeout: 5000,
-      });
-      console.log('포스트요청2');
+      const response = await axios.post('/api/posts', formData);
       const { data } = response;
 
       if (data.id) {
