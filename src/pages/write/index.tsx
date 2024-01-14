@@ -1,9 +1,10 @@
 import { MarkdownEditor } from '@/components/Markdown';
 import { createClient } from '@/utils/supabase/server';
+import axios from 'axios';
 import { GetServerSideProps } from 'next';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { FormEvent, useRef, useState } from 'react';
-import ReactSelect from 'react-select';
+import CreatableSelect from 'react-select/creatable';
 
 interface WriteProps {
   existingTags: string[];
@@ -23,27 +24,25 @@ export default function Write({
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    try {
+      const formData = new FormData();
 
-    const formData = new FormData();
+      formData.append('title', title);
+      formData.append('category', category);
+      formData.append('tags', tags);
+      formData.append('content', content);
 
-    formData.append('title', title);
-    formData.append('category', category);
-    formData.append('tags', tags);
-    formData.append('content', content);
+      if (fileRef.current?.files?.[0]) {
+        formData.append('preview_image', fileRef.current.files[0]);
+      }
+      const response = await axios.post('/api/posts', formData);
+      const { data } = response;
 
-    if (fileRef.current?.files?.[0]) {
-      formData.append('preview_image', fileRef.current.files[0]);
-    }
-
-    const response = await fetch('/api/posts', {
-      method: 'POST',
-      body: formData,
-    });
-
-    const data = await response.json();
-
-    if (data.id) {
-      router.push(`/posts/${data.id}`);
+      if (data.id) {
+        router.push(`/posts/${data.id}`);
+      }
+    } catch (error) {
+      console.error('요청 에러', error);
     }
   };
 
@@ -65,7 +64,7 @@ export default function Write({
             className="rounded-md border border-gray-300 p-2 transition-all hover:border-gray-400"
             ref={fileRef}
           />
-          <ReactSelect
+          <CreatableSelect
             instanceId="category"
             options={existingCategories.map((category) => ({
               label: category,
@@ -75,7 +74,7 @@ export default function Write({
             isMulti={false}
             onChange={(e) => e && setCategory(e.value)}
           />
-          <ReactSelect
+          <CreatableSelect
             instanceId="tags"
             options={existingTags.map((tag) => ({
               label: tag,
@@ -108,7 +107,7 @@ export const getServerSideProps: GetServerSideProps<WriteProps> = async ({
   req,
 }) => {
   const supabase = createClient(req.cookies);
-  const { data } = await supabase.from('Post').select('tags, category');
+  const { data } = await supabase.from('Post').select('category, tags');
 
   return {
     props: {
