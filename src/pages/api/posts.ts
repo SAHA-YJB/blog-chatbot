@@ -1,3 +1,5 @@
+// 사용자로부터 제목, 내용, 카테고리, 태그, 미리보기 이미지를 받아서 블로그 포스트를 생성
+// 생성된 포스트 정보를 응답으로 반환
 import { Post, PostRequest } from '@/types';
 import { createClient } from '@/utils/supabase/server';
 import type { StorageError } from '@supabase/storage-js';
@@ -5,6 +7,7 @@ import formidable from 'formidable';
 import { readFileSync } from 'fs';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
+// 페이지스라우터는 설정해야함
 export const config = {
   api: {
     bodyParser: false,
@@ -16,6 +19,7 @@ export default async function handler(
   res: NextApiResponse<Post | StorageError>,
 ) {
   try {
+    // formidable을 사용하여 multipart/form-data를 파싱
     const form = formidable();
     const [fields, files] = await form.parse(req);
 
