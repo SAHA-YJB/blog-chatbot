@@ -1,3 +1,4 @@
+import Input from '@/components/Input';
 import { MarkdownEditor } from '@/components/Markdown';
 import { createClient } from '@/utils/supabase/server';
 import axios from 'axios';
@@ -51,14 +52,14 @@ export default function Write({
       <h1 className="mb-8 text-2xl font-medium">새로운 글</h1>
       <form onSubmit={handleSubmit}>
         <div className="flex flex-col gap-3">
-          <input
+          <Input
             type="text"
             placeholder="제목"
             className="rounded-md border border-gray-300 p-2 transition-all hover:border-gray-400"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
-          <input
+          <Input
             type="file"
             accept="image/*"
             className="rounded-md border border-gray-300 p-2 transition-all hover:border-gray-400"
