@@ -19,6 +19,10 @@ export default async function handler(
   res: NextApiResponse<Post | StorageError | { error: string }>,
 ) {
   try {
+    if (req.method !== 'POST') {
+      res.status(405).end();
+      return;
+    }
     // formidable을 사용하여 multipart/form-data를 파싱
     const form = formidable();
     const [fields, files] = await form.parse(req);
