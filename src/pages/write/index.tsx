@@ -4,6 +4,7 @@ import { createClient } from '@/utils/supabase/server';
 import axios from 'axios';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/navigation';
+import { title } from 'process';
 import { FormEvent, useRef, useState } from 'react';
 import CreatableSelect from 'react-select/creatable';
 
@@ -17,7 +18,8 @@ export default function Write({
   existingCategories,
 }: WriteProps) {
   const fileRef = useRef<HTMLInputElement>(null);
-  const [title, setTitle] = useState('');
+  const titleRef = useRef<HTMLInputElement>(null);
+
   const [tags, setTags] = useState('');
   const [category, setCategory] = useState('');
   const [content, setContent] = useState('');
@@ -25,10 +27,22 @@ export default function Write({
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!titleRef.current?.value || titleRef.current.value.length === 0) {
+      return alert('제목을 입력해주세요');
+    }
+    if (category.length === 0) {
+      return alert('카테고리를 입력해주세요');
+    }
+    if (tags.length === 0) {
+      return alert('태그를 입력해주세요');
+    }
+    if (content.length === 0) {
+      return alert('내용을 입력해주세요');
+    }
     try {
       const formData = new FormData();
 
-      formData.append('title', title);
+      formData.append('title', titleRef.current?.value ?? '');
       formData.append('category', category);
       formData.append('tags', tags);
       formData.append('content', content);
@@ -56,8 +70,7 @@ export default function Write({
             type="text"
             placeholder="제목"
             className="rounded-md border border-gray-300 p-2 transition-all hover:border-gray-400"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            ref={titleRef}
           />
           <Input
             type="file"
