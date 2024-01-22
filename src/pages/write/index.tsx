@@ -3,15 +3,9 @@ import { MarkdownEditor } from '@/components/Markdown';
 import { createClient } from '@/utils/supabase/client';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/navigation';
 import { FormEvent, useRef, useState } from 'react';
 import CreatableSelect from 'react-select/creatable';
-
-interface WriteProps {
-  existingTags: string[];
-  existingCategories: string[];
-}
 
 export default function Write() {
   const fileRef = useRef<HTMLInputElement>(null);
