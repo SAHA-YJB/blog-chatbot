@@ -36,7 +36,7 @@ flowchart LR
 
 ### 개발 환경
 
-##### NextJS / ESlint-Prettier / TailwindCSS / Supabase
+##### NextJS / ESlint-Prettier / TailwindCSS / Supabase / Tanstack-Query
 
 ### 1. 페이지 / 레이아웃 구현
 
@@ -53,3 +53,7 @@ flowchart LR
 ###### - 카테고리 및 태그 입력창(react-select) / 글 내용 작성(react-md-editor) / 글 작성 요청((pagesRouter용이)formidable) / 글 디테일 페이지(date-fns / react-markdown-preview)
 
 ###### - supabase connect / Post (table, column 생성)
+
+### 2. List page
+
+###### - 서버 상태관리를 위한 Tanstack-Query 사용

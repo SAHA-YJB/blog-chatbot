@@ -12,6 +12,7 @@
   "dependencies": {
     "@supabase/ssr": "^0.0.10",
     "@supabase/supabase-js": "^2.39.2",
+    "@tanstack/react-query": "^5.17.19",
     "@uiw/react-markdown-preview": "^5.0.7",
     "@uiw/react-md-editor": "^4.0.3",
     "axios": "^1.6.5",
