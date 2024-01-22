@@ -1,10 +1,10 @@
 import Input from '@/components/Input';
 import { MarkdownEditor } from '@/components/Markdown';
-import { createClient } from '@/utils/supabase/server';
+import { createClient } from '@/utils/supabase/client';
+import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/navigation';
-import { title } from 'process';
 import { FormEvent, useRef, useState } from 'react';
 import CreatableSelect from 'react-select/creatable';
 
@@ -13,17 +13,35 @@ interface WriteProps {
   existingCategories: string[];
 }
 
-export default function Write({
-  existingTags,
-  existingCategories,
-}: WriteProps) {
+export default function Write() {
   const fileRef = useRef<HTMLInputElement>(null);
   const titleRef = useRef<HTMLInputElement>(null);
 
   const [tags, setTags] = useState('');
   const [category, setCategory] = useState('');
   const [content, setContent] = useState('');
+
   const router = useRouter();
+
+  const { data: existingCategories } = useQuery({
+    queryKey: ['categories'],
+    queryFn: async () => {
+      const supabase = createClient();
+      const { data } = await supabase.from('Post').select('category');
+      return Array.from(new Set(data?.map((post) => post.category)));
+    },
+  });
+
+  const { data: existingTags } = useQuery({
+    queryKey: ['tags'],
+    queryFn: async () => {
+      const supabase = createClient();
+      const { data } = await supabase.from('Post').select('tags');
+      return Array.from(
+        new Set(data?.flatMap((post) => JSON.parse(post.tags))),
+      );
+    },
+  });
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -80,7 +98,7 @@ export default function Write({
           />
           <CreatableSelect
             instanceId="category"
-            options={existingCategories.map((category) => ({
+            options={(existingCategories ?? []).map((category) => ({
               label: category,
               value: category,
             }))}
@@ -90,7 +108,7 @@ export default function Write({
           />
           <CreatableSelect
             instanceId="tags"
-            options={existingTags.map((tag) => ({
+            options={(existingTags ?? []).map((tag) => ({
               label: tag,
               value: tag,
             }))}
@@ -116,21 +134,3 @@ export default function Write({
     </div>
   );
 }
-
-export const getServerSideProps: GetServerSideProps<WriteProps> = async ({
-  req,
-}) => {
-  const supabase = createClient(req.cookies);
-  const { data } = await supabase.from('Post').select('category, tags');
-
-  return {
-    props: {
-      existingCategories: Array.from(
-        new Set(data?.map((post) => post.category)),
-      ),
-      existingTags: Array.from(
-        new Set(data?.flatMap((post) => JSON.parse(post.tags))),
-      ),
-    },
-  };
-};
