@@ -57,3 +57,5 @@ flowchart LR
 ### 2. List page
 
 ###### - 서버 상태관리를 위한 Tanstack-Query 사용
+
+###### - getServerSideProps => useQuery 변경
