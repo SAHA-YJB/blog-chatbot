@@ -59,3 +59,5 @@ flowchart LR
 ###### - 서버 상태관리를 위한 Tanstack-Query 사용
 
 ###### - getServerSideProps => useQuery 변경
+
+###### - pageRouter dynamic route Category/Tag page
