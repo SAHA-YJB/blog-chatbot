@@ -18,7 +18,8 @@ export default function TagPosts({ tag }: TagPostsProps) {
         .select('*')
         .like('tags', `%${tag}%`)
         .order('created_at', { ascending: false });
-      if (!data) console.log('데이터 가져오기를 실패했습니다');
+      if (!data)
+        console.log('[tag]데이터 가져오기를 실패 다시 한번 시도해주세요.');
       return data;
     },
   });
