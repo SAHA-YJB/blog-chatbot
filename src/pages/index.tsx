@@ -12,7 +12,12 @@ export default function Home() {
         .from('Post')
         .select('*')
         .order('created_at', { ascending: false });
-      if (!data) console.log('데이터 가져오기를 실패했습니다');
+      if (error) {
+        console.log('포스트 데이터 패칭 에러', error);
+      }
+      if (!data) {
+        console.log('데이터 가져오기를 실패했습니다');
+      }
       return data;
     },
   });

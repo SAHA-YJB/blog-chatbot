@@ -18,8 +18,12 @@ export default function CategoyPosts({ category }: CategoryPostsProps) {
         .select('*')
         .eq('category', category)
         .order('created_at', { ascending: false });
-      if (!data)
+      if (error) {
+        console.log('카테고리 데이터 패칭 에러', error);
+      }
+      if (!data) {
         console.log('[category]데이터 가져오기를 실패 다시 한번 시도해주세요.');
+      }
       return data;
     },
   });
