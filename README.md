@@ -62,4 +62,4 @@ flowchart LR
 
 ###### - pageRouter dynamic route Category/Tag page
 
-###### - Tanstack-Query infinity-scroll
+###### - Tanstack-Query infinity-scroll / react-intersection-observer를 이용한 무한 스크롤 구현
