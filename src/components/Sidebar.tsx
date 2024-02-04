@@ -1,10 +1,10 @@
+import { useCategories } from '@/utils/hook';
 import { cn } from '@/utils/style';
-import Link from 'next/link';
-import React, { FC } from 'react';
-import { AiFillGithub, AiFillFileText, AiOutlineClose } from 'react-icons/ai';
-import IconButton from './IconButton';
-import { useQuery } from '@tanstack/react-query';
 import { createClient } from '@/utils/supabase/client';
+import Link from 'next/link';
+import { FC } from 'react';
+import { AiFillFileText, AiFillGithub, AiOutlineClose } from 'react-icons/ai';
+import IconButton from './IconButton';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -14,13 +14,7 @@ interface SidebarProps {
 const supabase = createClient();
 
 const Sidebar: FC<SidebarProps> = ({ isOpen, close }) => {
-  const { data: existingCategories } = useQuery({
-    queryKey: ['categories'],
-    queryFn: async () => {
-      const { data } = await supabase.from('Post').select('category');
-      return Array.from(new Set(data?.map((post) => post.category)));
-    },
-  });
+  const { data: existingCategories } = useCategories();
 
   return (
     <div
