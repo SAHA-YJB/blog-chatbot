@@ -39,7 +39,7 @@ export default function Admin() {
   }, []);
 
   return (
-    <div className="container mx-auto flex flex-col px-4 pb-20 pt-12">
+    <div className="container flex flex-col pb-20 pt-12">
       {!!userResponse?.data.user ? (
         <div className="flex flex-col gap-2">
           <div className="mb-8">

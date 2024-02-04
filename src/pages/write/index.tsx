@@ -74,7 +74,7 @@ export default function Write() {
   };
 
   return (
-    <div className="container mx-auto flex flex-col px-4 pb-20 pt-12">
+    <div className="container flex flex-col pb-20 pt-12">
       <h1 className="mb-8 text-2xl font-medium">새로운 글</h1>
       <form onSubmit={handleSubmit}>
         <div className="flex flex-col gap-3">
