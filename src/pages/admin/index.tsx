@@ -1,3 +1,4 @@
+import Button from '@/components/Button';
 import Input from '@/components/Input';
 import { createClient } from '@/utils/supabase/client';
 import { UserResponse } from '@supabase/supabase-js';
@@ -45,14 +46,11 @@ export default function Admin() {
           <div className="mb-8">
             <b>{userResponse.data.user.email}</b>님으로 로그인 하셨습니다.
           </div>
-          <button
-            type="button"
-            className="w-full rounded-md bg-gray-800 py-2 text-white"
-            onClick={() => router.push('/write')}
-          >
+          <Button type="button" onClick={() => router.push('/write')}>
             글 쓰러 가기
-          </button>
-          <button
+          </Button>
+
+          <Button
             type="button"
             className="w-full rounded-md bg-gray-800 py-2 text-white"
             onClick={async () => {
@@ -61,7 +59,7 @@ export default function Admin() {
             }}
           >
             로그아웃
-          </button>
+          </Button>
         </div>
       ) : (
         <div className="flex flex-col gap-8">
@@ -71,12 +69,9 @@ export default function Admin() {
               <Input type="text" placeholder="이메일" ref={emailRef} />
               <Input type="password" placeholder="비밀번호" ref={passwordRef} />
             </div>
-            <button
-              type="submit"
-              className="mt-4 w-full rounded-md bg-gray-800 py-2 text-white"
-            >
+            <Button type="submit" className="mt-4">
               관리자 로그인
-            </button>
+            </Button>
           </form>
         </div>
       )}

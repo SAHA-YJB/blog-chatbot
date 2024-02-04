@@ -1,3 +1,4 @@
+import Button from '@/components/Button';
 import Input from '@/components/Input';
 import { MarkdownEditor } from '@/components/Markdown';
 import { createClient } from '@/utils/supabase/client';
@@ -118,12 +119,9 @@ export default function Write() {
             onChange={(e) => setContent(e ?? '')}
           />
         </div>
-        <button
-          type="submit"
-          className="mt-4 w-full rounded-md bg-gray-800 py-2 text-white hover:bg-slate-700"
-        >
+        <Button type="submit" className="mt-4">
           작성하기
-        </button>
+        </Button>
       </form>
     </div>
   );
