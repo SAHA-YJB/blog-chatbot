@@ -20,9 +20,11 @@ export default function Write() {
 
   const router = useRouter();
 
+  // 카테고리와 태그를 가져옴
   const { data: existingCategories } = useCategories();
   const { data: existingTags } = useTags();
 
+  // form의 제출을 처리하는 함수를 정의
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!titleRef.current?.value || titleRef.current.value.length === 0) {
@@ -38,6 +40,7 @@ export default function Write() {
       return alert('내용을 입력해주세요');
     }
     try {
+      // FormData 객체를 생성하고 필드 값을 추가
       const formData = new FormData();
 
       formData.append('title', titleRef.current?.value ?? '');
@@ -48,6 +51,7 @@ export default function Write() {
       if (fileRef.current?.files?.[0]) {
         formData.append('preview_image', fileRef.current.files[0]);
       }
+      // axios를 사용하여 '/api/posts' 엔드포인트에 POST 요청을 보냄
       const response = await axios.post('/api/posts', formData);
       const { data } = response;
 
