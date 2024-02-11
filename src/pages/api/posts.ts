@@ -67,7 +67,9 @@ export default async function handler(
     // 생성된 포스트 요청 객체로 새 포스트를 데이터베이스에 삽입
     const { data } = await supabase.from('Post').insert([postRequest]).select();
 
-    // 삽입된 데이터가 있으면 그 데이터를 응답으로 반환하고, 아니면 500 상태 코드를 응답
+    // 데이터가 있고 삽입된 데이터가 있으면 태그와 나머지 데이터를 응답으로 반환하고,
+    // 태그는 JSON 문자열로 저장되어 있으므로 JSON.parse를 사용하여 배열로 변환
+    // 아니면 500 상태 코드를 응답
     if (data && data.length === 1) {
       const { tags, ...rest } = data[0];
       res.status(200).json({ ...rest, tags: JSON.parse(tags) as string[] });
