@@ -65,3 +65,9 @@ flowchart LR
 ###### - Tanstack-Query infinity-scroll / react-intersection-observer를 이용한 무한 스크롤 구현
 
 ###### - mainPage, CategoryPage, TagPage common component apply
+
+### 3. ChatBot 구현
+
+###### - OpenAi API Context -> 요청을 보낼 때 메시지 필드를 채우는데 사용
+
+###### - 메시지 목록 렌더 -> 채팅을 함에 따라 메시지 컴포넌트를 추가해서 렌더에 활용
