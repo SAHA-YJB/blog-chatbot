@@ -24,7 +24,14 @@ export default async function handler(
 
   // OpenAI API를 이용하여 대화를 생성합
   const response = await openai.chat.completions.create({
-    messages,
+    messages: [
+      {
+        role: 'system',
+        content:
+          '너는 SAHA를 위한 챗봇이야 질문에 답을 하고 너의 답에 0 ~ 10까지의 숫자를 매겨서 너의 답변이 몇 점인지도 말해줘',
+      },
+      ...messages,
+    ],
     // 사용할 모델을 지정
     model: 'gpt-4-0613',
   });

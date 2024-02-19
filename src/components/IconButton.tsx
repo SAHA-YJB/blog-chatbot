@@ -10,6 +10,7 @@ type IconButtonProps<Component extends ElementType> =
     iconClassName?: string;
     className?: string;
     component?: Component;
+    handleReset?: () => void;
   };
 
 const IconButton = <Component extends ElementType = 'button'>({
@@ -17,6 +18,7 @@ const IconButton = <Component extends ElementType = 'button'>({
   className,
   iconClassName,
   Icon,
+  handleReset,
   // 컴포넌트 타입이 추론되면 나머지 props 타입을 추론할 수 있게 된다.ex) Link라면 href, target 등등
   ...props
 }: IconButtonProps<Component>) => {
@@ -33,6 +35,7 @@ const IconButton = <Component extends ElementType = 'button'>({
     },
     <Icon
       className={cn('h-5 w-5 transition-all lg:h-6 lg:w-6', iconClassName)}
+      onClick={handleReset}
     />,
   );
 };
