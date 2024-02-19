@@ -20,7 +20,12 @@ export default function Search() {
       const res = await axios.post('/api/completions', { messages });
       return res.data.messages;
     },
-    onSuccess: (data) => setMessageParams(data),
+    onSuccess: (data) => {
+      setMessageParams(data);
+      if (inputRef.current) {
+        inputRef.current.value = '';
+      }
+    },
   });
 
   const handleSubmit = useCallback(
