@@ -1,8 +1,9 @@
 import IconButton from '@/components/IconButton';
+import Message, { MessageProps } from '@/components/Message';
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { ChatCompletionMessageParam } from 'openai/resources/index';
-import { FormEvent, useCallback, useRef, useState } from 'react';
+import { FormEvent, useCallback, useMemo, useRef, useState } from 'react';
 import { FaMessage } from 'react-icons/fa6';
 
 export default function Search() {
@@ -22,16 +23,13 @@ export default function Search() {
     },
     onSuccess: (data) => {
       setMessageParams(data);
-      if (inputRef.current) {
-        inputRef.current.value = '';
-      }
     },
   });
 
   const handleSubmit = useCallback(
     (e: FormEvent<HTMLFormElement>) => {
       e?.preventDefault();
-      if (isPending) return;
+      if (isPending || !inputRef.current) return;
       const nextMessages = [
         ...messageParams,
         {
@@ -41,12 +39,25 @@ export default function Search() {
       ];
       setMessageParams(nextMessages);
       mutate(nextMessages);
+      inputRef.current.value = '';
     },
     [isPending, messageParams, mutate],
   );
+
+  const messagePropsList = useMemo(() => {
+    return messageParams.filter(
+      (param): param is MessageProps =>
+        param.role === 'assistant' || param.role === 'user',
+    );
+  }, [messageParams]);
+
   return (
     <div className="flex flex-1 flex-col">
-      <div className="flex-1">{JSON.stringify(messageParams)}</div>
+      <div className="flex-1">
+        {messagePropsList.map((props, index) => (
+          <Message {...props} key={index} />
+        ))}
+      </div>
       <div className="container mx-auto p-4 pb-12">
         <form
           onSubmit={handleSubmit}
