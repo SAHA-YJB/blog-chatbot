@@ -15,14 +15,17 @@ interface PostListProps {
 
 const PostList: FC<PostListProps> = ({ category, tag, className }) => {
   const { ref, inView } = useInView();
+  // infinite query를 사용하여 페이지별로 데이터를 가져옴
   const {
     data: postPages,
     fetchNextPage,
     hasNextPage,
   } = useInfiniteQuery({
     queryKey: ['posts'],
+    // 페이지별로 데이터를 가져오는 함수
     queryFn: async ({ pageParam }) => {
       let request = supabase.from('Post').select('*');
+      // category와 tag가 있으면 해당하는 데이터만 가져오도록 쿼리를 수정
       if (category) {
         request = request.eq('category', category);
       }
