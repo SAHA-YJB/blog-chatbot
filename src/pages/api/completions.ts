@@ -5,6 +5,7 @@ import { ChatCompletionMessageParam } from 'openai/resources/index.mjs';
 const openai = new OpenAi({ apiKey: process.env.OPENAI_API_KEY });
 
 // API 응답의 타입을 정의
+// open ai api의타입
 type CompletionsResponse = {
   messages: ChatCompletionMessageParam[];
 };

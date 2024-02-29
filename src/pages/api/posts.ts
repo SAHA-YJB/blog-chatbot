@@ -9,6 +9,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 // 페이지스라우터는 설정해야함
 // Next.js의 API 설정을 정의
+// bodyParser: false로 설정하여 multipart/form-data를 파싱
 export const config = {
   api: {
     bodyParser: false,
