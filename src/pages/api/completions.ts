@@ -14,6 +14,7 @@ type CompletionsResponse = {
   messages: ChatCompletionMessageParam[];
 };
 
+// 첫 번째 메시지를 가져오는 함수 Supabase 클라이언트를 인자로 받음
 const getFirstMessage = async (
   supabase: ReturnType<typeof createClient>,
 ): Promise<ChatCompletionSystemMessageParam> => {
@@ -29,6 +30,7 @@ const getFirstMessage = async (
   };
 };
 
+// 블로그 포스트를 가져오는 함수 포스트의 id와 Supabase 클라이언트를 인자로 받음
 const getBlogPost = async (
   id: string,
   supabase: ReturnType<typeof createClient>,
@@ -61,6 +63,7 @@ export default async function handler(
     messages.unshift(await getFirstMessage(supabase));
   }
 
+  // 마지막 메시지의 역할이 'assistant'가 아닐 때까지 반복
   while (messages.at(-1)?.role !== 'assistant') {
     // OpenAI API를 이용하여 대화를 생성합
     const response = await openai.chat.completions.create({
@@ -84,12 +87,15 @@ export default async function handler(
       ],
     });
 
+    // API 응답에서 메시지를 가져옵니다.
     const responseMessage = response.choices[0].message;
 
     if (responseMessage.function_call) {
+      // 함수 호출의 인자에서 id를 가져와 getBlogPost 함수를 호출하여 블로그 포스트를 가져옴
       const { id } = JSON.parse(responseMessage.function_call.arguments);
       const fucResult = await getBlogPost(id, supabase);
 
+      // 메시지 배열에 함수 결과를 추가
       messages.push({
         role: 'function',
         content: JSON.stringify(fucResult),
