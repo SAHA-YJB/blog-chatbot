@@ -9,6 +9,8 @@ import { FaRegTrashAlt } from 'react-icons/fa';
 
 const SearchPage = () => {
   const inputRef = useRef<HTMLInputElement>(null);
+  // messageParams 상태를 설정
+  // 초기값은 로컬 스토리지에 저장된 메시지
   const [messageParams, setMessageParams] = useState<
     ChatCompletionMessageParam[]
   >(() => {
@@ -27,12 +29,14 @@ const SearchPage = () => {
       const res = await axios.post('/api/completions', { messages });
       return res.data.messages;
     },
+    // API 호출이 성공하면 메시지를 설정하고 로컬 스토리지에 저장
     onSuccess: (data) => {
       setMessageParams(data);
       localStorage.setItem('messages', JSON.stringify(data));
     },
   });
 
+  // 대화를 초기화하는 함수
   const handleReset = useCallback(() => {
     if (window.confirm('정말로 대화를 초기화할까요?')) {
       setMessageParams([]);
@@ -58,6 +62,7 @@ const SearchPage = () => {
     [isPending, messageParams, mutate],
   );
 
+  // 메시지 목록을 생성하는 함수
   const messagePropsList = useMemo(() => {
     return messageParams.filter(
       (param): param is MessageProps =>
