@@ -1,5 +1,4 @@
 {
-  "root": true,
   "extends": [
     "next/core-web-vitals", // Next.js의 Core Web Vitals에 관련된 규칙을 적용합
     "prettier", // Prettier와 충돌하지 않는 ESLint 규칙을 적용
@@ -7,35 +6,35 @@
   ],
   // 프로젝트 고유의 규칙을 정의
   "rules": {
-      // Tailwind CSS 클래스의 순서를 검사하는 규칙을 정의
-      "tailwindcss/classnames-order": [
-        // 규칙을 위반하면 경고 메시지를 출력
-        "warn",
+    // Tailwind CSS 클래스의 순서를 검사하는 규칙을 정의
+    "tailwindcss/classnames-order": [
+      // 규칙을 위반하면 경고 메시지를 출력
+      "warn",
       {
         // 'cva', 'cn' 함수 호출에서 이 규칙을 적용
         "callees": ["cva", "cn"]
       }
     ],
-      "tailwindcss/enforces-negative-arbitrary-values": [
-        "warn",
+    "tailwindcss/enforces-negative-arbitrary-values": [
+      "warn",
       {
         "callees": ["cva", "cn"]
       }
     ],
-      "tailwindcss/enforces-shorthand": [
-        "warn",
+    "tailwindcss/enforces-shorthand": [
+      "warn",
       {
         "callees": ["cva", "cn"]
       }
     ],
-      "tailwindcss/no-contradicting-classname": [
-        "warn",
+    "tailwindcss/no-contradicting-classname": [
+      "warn",
       {
         "callees": ["cva", "cn"]
       }
     ],
-      "tailwindcss/no-custom-classname": [
-        "warn",
+    "tailwindcss/no-custom-classname": [
+      "warn",
       {
         "callees": ["cva", "cn"]
       }
