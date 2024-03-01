@@ -1,6 +1,10 @@
+import { createClient } from '@/utils/supabase/server';
 import { NextApiRequest, NextApiResponse } from 'next';
 import OpenAi from 'openai';
-import { ChatCompletionMessageParam } from 'openai/resources/index.mjs';
+import {
+  ChatCompletionMessageParam,
+  ChatCompletionSystemMessageParam,
+} from 'openai/resources/index.mjs';
 
 const openai = new OpenAi({ apiKey: process.env.OPENAI_API_KEY });
 
@@ -8,6 +12,32 @@ const openai = new OpenAi({ apiKey: process.env.OPENAI_API_KEY });
 // open ai api의타입
 type CompletionsResponse = {
   messages: ChatCompletionMessageParam[];
+};
+
+const getFirstMessage = async (
+  supabase: ReturnType<typeof createClient>,
+): Promise<ChatCompletionSystemMessageParam> => {
+  const { data: postMetadataList } = await supabase
+    .from('Post')
+    .select('id, title, category, tags');
+  return {
+    role: 'system',
+    content: `너는 개발 전문 챗봇이야 모든 개발에 관한 너가 알고있는 지식을 활용하여 답변해줘야해
+      그리고 여기 블로그에서도 참고할수 있는것은 가져와서 답변해줘 
+      블로그 글 목록: ${JSON.stringify(postMetadataList ?? [])}
+      `,
+  };
+};
+
+const getBlogPost = async (
+  id: string,
+  supabase: ReturnType<typeof createClient>,
+) => {
+  const { data: post } = await supabase
+    .from('Post')
+    .select('content')
+    .eq('id', id);
+  return post?.[0]?.content ?? [];
 };
 
 export default async function handler(
@@ -22,23 +52,53 @@ export default async function handler(
 
   // 메시지를 저장할 배열을 생성
   const messages = req.body.messages as ChatCompletionMessageParam[];
+  // Supabase 클라이언트를 생성
+  // 요청 헤더에 저장된 쿠키를 사용하여 인증된 사용자의 정보를 가져옴
+  const supabase = await createClient(req.cookies);
 
-  // OpenAI API를 이용하여 대화를 생성합
-  const response = await openai.chat.completions.create({
-    messages: [
-      {
-        role: 'system',
-        content:
-          '너는 SAHA를 위한 챗봇이야 질문에 답을 하고 너의 답에 0 ~ 10까지의 숫자를 매겨서 너의 답변이 몇 점인지도 말해줘',
-      },
-      ...messages,
-    ],
-    // 사용할 모델을 지정
-    model: 'gpt-4-0613',
-  });
+  // 메시지가 없다면 첫 번째 메시지를 가져와 배열에 추가
+  if (messages.length === 1) {
+    messages.unshift(await getFirstMessage(supabase));
+  }
 
-  console.log(response);
-  messages.push(response.choices[0].message);
+  while (messages.at(-1)?.role !== 'assistant') {
+    // OpenAI API를 이용하여 대화를 생성합
+    const response = await openai.chat.completions.create({
+      messages,
+      // 사용할 모델을 지정
+      model: 'gpt-4-1106-preview',
+      function_call: 'auto',
+      functions: [
+        {
+          name: 'retrieve',
+          parameters: {
+            type: 'object',
+            properties: {
+              id: {
+                type: 'string',
+                description: '가져온 데이터의 id',
+              },
+            },
+          },
+        },
+      ],
+    });
+
+    const responseMessage = response.choices[0].message;
+
+    if (responseMessage.function_call) {
+      const { id } = JSON.parse(responseMessage.function_call.arguments);
+      const fucResult = await getBlogPost(id, supabase);
+
+      messages.push({
+        role: 'function',
+        content: JSON.stringify(fucResult),
+        name: responseMessage.function_call.name,
+      });
+    } else {
+      messages.push(responseMessage);
+    }
+  }
 
   res.status(200).json({ messages });
 }
