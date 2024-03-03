@@ -6,6 +6,7 @@ import {
   ChatCompletionSystemMessageParam,
 } from 'openai/resources/index.mjs';
 
+// OpenAI API 클라이언트를 생성
 const openai = new OpenAi({ apiKey: process.env.OPENAI_API_KEY });
 
 // API 응답의 타입을 정의
@@ -15,6 +16,12 @@ type CompletionsResponse = {
 };
 
 // 첫 번째 메시지를 가져오는 함수 Supabase 클라이언트를 인자로 받음
+// ReturnType<typeof createClient>
+// 이 매개변수의 타입은 createClient 함수의 반환 타입
+// ReturnType은 TypeScript의 내장 유틸리티 타입 중 하나로,
+// 특정 함수의 반환 타입을 추출
+// createClient 함수의 반환 타입이 supabase 매개변수의 타입
+// createClient 함수는 supabase client 객체를 생성하여 반환하는 함수라고 생각
 const getFirstMessage = async (
   supabase: ReturnType<typeof createClient>,
 ): Promise<ChatCompletionSystemMessageParam> => {
@@ -35,6 +42,7 @@ const getBlogPost = async (
   id: string,
   supabase: ReturnType<typeof createClient>,
 ) => {
+  // 아이디를 이용하여 포스트를 가져옴
   const { data: post } = await supabase
     .from('Post')
     .select('content')
