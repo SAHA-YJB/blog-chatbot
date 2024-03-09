@@ -1,7 +1,6 @@
 // 미들웨어는 모든 요청이 서버에 도달하기 전에 처리되는 함수
 // 이를 통해 요청을 검사하거나 수정하거나, 특정 작업을 수행
 import { NextRequest, NextResponse } from 'next/server';
-import React from 'react';
 import { createClient } from './utils/supabase/middleware';
 
 export async function middleware(request: NextRequest) {
