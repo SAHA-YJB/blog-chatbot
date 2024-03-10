@@ -11,6 +11,8 @@ const SearchPage = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   // messageParams 상태를 설정
   // 초기값은 로컬 스토리지에 저장된 메시지
+  // 로컬 스토리지에서 메시지를 불러오는 로직
+  // 서버 사이드 렌더링 환경을 고려하여 window 객체의 존재 여부를 확인
   const [messageParams, setMessageParams] = useState<
     ChatCompletionMessageParam[]
   >(() => {
@@ -20,6 +22,7 @@ const SearchPage = () => {
     return JSON.parse(existingMessages);
   });
 
+  // mutate 함수를 통해 메시지를 전송하고 결과를 처리
   const { mutate, isPending } = useMutation<
     ChatCompletionMessageParam[],
     unknown,
@@ -44,6 +47,8 @@ const SearchPage = () => {
     }
   }, []);
 
+  // 폼 제출 시 입력값을 처리하는 함수
+  // 입력값이 없거나 통신 중인 경우를 처리
   const handleSubmit = useCallback(
     (e: FormEvent<HTMLFormElement>) => {
       e?.preventDefault();
@@ -62,7 +67,8 @@ const SearchPage = () => {
     [isPending, messageParams, mutate],
   );
 
-  // 메시지 목록을 생성하는 함수
+  // 메시지 목록을 생성하는 로직
+  // 여기서는 필터링된 메시지를 메시지 컴포넌트의 prop으로 전달
   const messagePropsList = useMemo(() => {
     return messageParams.filter(
       (param): param is MessageProps =>

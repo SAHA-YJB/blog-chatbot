@@ -20,5 +20,5 @@ export async function middleware(request: NextRequest) {
 
 // write로 들어갔을때 미들웨어 실행
 export const config = {
-  matcher: '/write',
+  matcher: ['/write'],
 };
