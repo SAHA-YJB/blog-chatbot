@@ -33,6 +33,7 @@ const SearchPage = () => {
       return res.data.messages;
     },
     // API 호출이 성공하면 메시지를 설정하고 로컬 스토리지에 저장
+    // 제이슨 형태로 저장
     onSuccess: (data) => {
       setMessageParams(data);
       localStorage.setItem('messages', JSON.stringify(data));
